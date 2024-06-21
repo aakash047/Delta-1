@@ -1,0 +1,46 @@
+FROM ubuntu:latest
+
+WORKDIR /home/aakash/Desktop/Delta
+
+# Install necessary dependencies
+RUN apt-get update && \
+    apt-get install -y sudo && \
+    apt-get clean && \
+    apt-get install acl && \
+    apt-get install -y vim && \
+    apt-get install -y apache2 && \
+    apt-get install -y apache2-utils && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the server setup files to the container
+COPY usergen.sh /home/aakash/Desktop/Delta
+COPY domainPreference.sh /home/aakash/Desktop/Delta
+COPY mentorAllocation.sh /home/aakash/Desktop/Delta
+COPY displayStatus.sh /home/aakash/Desktop/Delta
+COPY submitTask.sh /home/aakash/Desktop/Delta
+COPY deRegister.sh /home/aakash/Desktop/Delta
+COPY cronjob.sh /home/aakash/Desktop/Delta
+COPY mentors.txt /home/aakash/Desktop/Delta
+COPY mentees.txt /home/aakash/Desktop/Delta
+COPY apache.sh /home/aakash/Desktop/Delta
+COPY database.sh /home/aakash/Desktop/Delta
+
+# Running the setup scripts
+RUN chmod +x /home/aakash/Desktop/Delta/usergen.sh
+RUN chmod +x /home/aakash/Desktop/Delta/domainPreference.sh
+RUN chmod +x /home/aakash/Desktop/Delta/mentorAllocation.sh 
+RUN chmod +x /home/aakash/Desktop/Delta/displayStatus.sh 
+RUN chmod +x /home/aakash/Desktop/Delta/submitTask.sh 
+RUN chmod +x /home/aakash/Desktop/Delta/deRegister.sh 
+RUN chmod +x /home/aakash/Desktop/Delta/cronjob.sh 
+RUN chmod +x /home/aakash/Desktop/Delta/apache.sh
+RUN chmod +x /home/aakash/Desktop/Delta/database.sh
+RUN mkdir /home/aakash/Desktop/Delta/shared
+RUN ./usergen.sh
+
+# Expose the required ports
+EXPOSE 80
+
+# Set the entry point to keep the container running
+CMD ["tail", "-f", "/dev/null"]
+

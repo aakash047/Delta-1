@@ -31,9 +31,10 @@ mentee_submit_task() {
 # Function for mentors to create symlinks and check task completion
 mentor_submit_task() {
     mentor_name=$1
+    mentor_domain=$2
 
     # Check if mentor exists
-    MENTOR_HOME="$MENTORS_DIR/$mentor_name"
+    MENTOR_HOME="$MENTORS_DIR/$mentor_domain/$mentor_name"
     if [ ! -d "$MENTOR_HOME" ]; then
         echo "Mentor $mentor_name does not exist."
         exit 1
@@ -43,21 +44,19 @@ mentor_submit_task() {
     ALLOCATED_MENTEES="$MENTOR_HOME/allocatedMentees.txt"
     while read -r mentee_rollno; do
         MENTEE_HOME="$MENTEES_DIR/$mentee_rollno"
-        for domain in $(ls "$MENTEE_HOME"); do
-            for task_dir in "$MENTEE_HOME/$domain/"*; do
-                task_name=$(basename "$task_dir")
-                MENTOR_TASK_DIR="$MENTOR_HOME/submittedTasks/$task_name"
+        for task_dir in "$MENTEE_HOME/$mentor_domain/"*; do
+            task_name=$(basename "$task_dir")
+            MENTOR_TASK_DIR="$MENTOR_HOME/submittedTasks/$task_name"
 
-                # Create symlink if it doesn't exist
-                if [ ! -L "$MENTOR_TASK_DIR/$mentee_rollno" ]; then
-                    ln -s "$task_dir" "$MENTOR_TASK_DIR/$mentee_rollno"
-                fi
+            # Create symlink if it doesn't exist
+            if [ ! -L "$MENTOR_TASK_DIR/$mentee_rollno" ]; then
+                ln -s "$task_dir" "$MENTOR_TASK_DIR/$mentee_rollno"
+            fi
 
-                # Check if task is completed and update task_completed.txt
-                if [ "$(ls -A "$task_dir")" ]; then
-                    echo "Task: $task_name, Domain: $domain, Mentee: $mentee_rollno, Completed on: $(date)" >> "$MENTEE_HOME/task_completed.txt"
-                fi
-            done
+            # Check if task is completed and update task_completed.txt
+            if [ "$(ls -A "$task_dir")" ]; then
+                echo "Task: $task_name, Domain: $mentor_domain, Mentee: $mentee_rollno, Completed on: $(date)" >> "$MENTEE_HOME/task_completed.txt"
+            fi
         done
     done < "$ALLOCATED_MENTEES"
 
@@ -78,5 +77,6 @@ if [[ "$current_user" =~ ^[0-9]{8}$ ]]; then
 else
     # Mentor
     mentor_name="$current_user"
-    mentor_submit_task "$mentor_name"
+    mentor_domain=$1
+    mentor_submit_task "$mentor_name" "$mentor_domain"
 fi

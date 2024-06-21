@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Base directory
-BASE_DIR="/tmp/Core"
+BASE_DIR="/home/aakash/Desktop/Delta"
 CORE_HOME="$BASE_DIR/Core"
 MENTEES_DIR="$CORE_HOME/mentees"
 STATUS_FILE="$CORE_HOME/display_status_last_run.txt"

@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  server:
+    container_name: server
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - shared:home/aakash/Desktop/Delta/shared/
+
+  db:
+    container_name: database
+    image: postgres
+    environment:
+      - POSTGRES_DB=server_db
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=db_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - shared:home/aakash/Desktop/Delta/shared/
+    command: bash -c "cp home/aakash/Desktop/Delta/shared/database.sql /docker-entrypoint-initdb.d/database.sql && docker-entrypoint.sh postgres"
+
+volumes:
+  shared:
