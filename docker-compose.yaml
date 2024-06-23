@@ -9,7 +9,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - shared:home/aakash/Desktop/Delta/shared/
+      - shared:/home/aakash/Desktop/Delta/shared
 
   db:
     container_name: database
@@ -21,8 +21,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - shared:home/aakash/Desktop/Delta/shared/
-    command: bash -c "cp home/aakash/Desktop/Delta/shared/database.sql /docker-entrypoint-initdb.d/database.sql && docker-entrypoint.sh postgres"
+      - shared:/home/aakash/Desktop/Delta/shared
+    command: bash -c "cp /home/aakash/Desktop/Delta/shared/database.sql /docker-entrypoint-initdb.d/database.sql && docker-entrypoint.sh postgres"
 
 volumes:
   shared:
