@@ -9,14 +9,7 @@ MENTEES_DIR="$CORE_HOME/mentees"
 domain_pref() {
     mentee_name=$1
     domain_pref_file="$MENTEES_DIR/$mentee_name/domain_pref.txt"
-    # echo "$MENTEES_DIR/$mentee_name"
-
-    # # Check if mentee exists
-    # if [ ! -d "$MENTEES_DIR/$mentee_name" ]; then
-    #     echo "Mentee $mentee_name does not exist."
-    #     exit 1
-    # fi
-
+    
     # Get domain preferences from mentee
     echo "Enter your domain preferences (1-3) in preferred order (e.g., webdev, appdev, sysad):"
     read -p "Preference 1: " pref1
@@ -25,9 +18,9 @@ domain_pref() {
 
 
     # Write domain preferences to mentee's domain_pref.txt
-    echo "1. $pref1" > "$domain_pref_file"
-    echo "2. $pref2" >> "$domain_pref_file"
-    echo "3. $pref3" >> "$domain_pref_file"
+    echo "$pref1" > "$domain_pref_file"
+    echo "$pref2" >> "$domain_pref_file"
+    echo "$pref3" >> "$domain_pref_file"
 
     # Append mentee's roll number and domains to mentees_domain.txt
     echo "$mentee_name $pref1 $pref2 $pref3" >> "$CORE_HOME/mentees_domain.txt"

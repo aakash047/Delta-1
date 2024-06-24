@@ -24,6 +24,7 @@ COPY mentors.txt /home/aakash/Desktop/Delta
 COPY mentees.txt /home/aakash/Desktop/Delta
 COPY apache.sh /home/aakash/Desktop/Delta
 COPY database.sh /home/aakash/Desktop/Delta
+COPY setQuiz.sh /home/aakash/Desktop/Delta
 
 # Running the setup scripts
 RUN chmod +x /home/aakash/Desktop/Delta/usergen.sh
@@ -33,6 +34,7 @@ RUN chmod +x /home/aakash/Desktop/Delta/displayStatus.sh
 RUN chmod +x /home/aakash/Desktop/Delta/submitTask.sh 
 RUN chmod +x /home/aakash/Desktop/Delta/deRegister.sh 
 RUN chmod +x /home/aakash/Desktop/Delta/cronjob.sh 
+RUN chmod +x /home/aakash/Desktop/Delta/setQuiz.sh
 RUN chmod +x /home/aakash/Desktop/Delta/apache.sh
 RUN chmod +x /home/aakash/Desktop/Delta/database.sh
 RUN mkdir /home/aakash/Desktop/Delta/shared
