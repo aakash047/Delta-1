@@ -17,3 +17,12 @@ then run the server.py and client.py in seperate terminal
 
 
 1st start the server then start client
+
+
+updated after Dockerizing
+
+
+docker-compose up --build -d
+
+
+then run the client.py in new terminal
