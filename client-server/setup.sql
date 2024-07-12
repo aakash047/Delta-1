@@ -26,4 +26,17 @@ CREATE TABLE IF NOT EXISTS leaderboard (
     points INT DEFAULT 0
 );
 
--- Sample data can be inserted here if needed for testing
+CREATE TABLE IF NOT EXISTS answered_questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255),
+    question_id INT,
+    FOREIGN KEY (username) REFERENCES users(username),
+    FOREIGN KEY (question_id) REFERENCES questions(id)
+);
+
+
+
+CREATE USER 'aakash'@'localhost' IDENTIFIED BY 'db_pass';
+GRANT ALL PRIVILEGES ON *.* TO 'aakash'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+

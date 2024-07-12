@@ -20,7 +20,7 @@ def login(client):
     client.send(message.encode('utf-8'))
     response = client.recv(1024).decode('utf-8')
     print(response)
-    return "successful" in response
+    return "successful" in response.lower()
 
 def add_question(client):
     question = input("Enter the question: ")

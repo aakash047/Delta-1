@@ -1,14 +1,15 @@
+import os
 import socket
 import threading
-import mysql.connector # type: ignore #
+import mysql.connector
 import hashlib
 
 # MySQL database setup
 db_config = {
-    'user': 'aakash',
-    'password': 'db_pass',
-    'host': 'localhost',
-    'database': 'quiz_game'
+    'user': os.getenv('DB_USER', 'aakash'),
+    'password': os.getenv('DB_PASSWORD', 'db_pass'),
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'database': os.getenv('DB_NAME', 'quiz_game')
 }
 conn = mysql.connector.connect(**db_config)
 cursor = conn.cursor()
@@ -75,21 +76,23 @@ def add_question(question, options, answer, username):
     return "Question added successfully."
 
 def answer_question(question_id, answer, username):
-    # Check if the user has already answered this question
-    cursor.execute('SELECT user_answer FROM questions WHERE id = %s AND created_by != %s', (question_id, username))
-    existing_answer = cursor.fetchone()
-    if not existing_answer:
-        return "You cannot answer this question again."
+    # Check if user created the question
+    cursor.execute('SELECT created_by FROM questions WHERE id = %s', (question_id,))
+    created_by = cursor.fetchone()[0]
+    if created_by == username:
+        return "You cannot answer your own question."
 
-    # Insert the answer if it's a new answer for the user
-    cursor.execute('UPDATE questions SET user_answer = %s WHERE id = %s', (answer, question_id))
-    conn.commit()
+    # Check if user has already answered the question
+    cursor.execute('SELECT COUNT(*) FROM answered_questions WHERE username = %s AND question_id = %s', (username, question_id))
+    if cursor.fetchone()[0] > 0:
+        return "You have already answered this question."
 
-    # Check if the answer is correct
+    # Check the answer
     cursor.execute('SELECT answer FROM questions WHERE id = %s', (question_id,))
     correct_answer = cursor.fetchone()[0]
     if correct_answer == answer:
         cursor.execute('INSERT INTO leaderboard (username, points) VALUES (%s, %s) ON DUPLICATE KEY UPDATE points = points + 1', (username, 1))
+        cursor.execute('INSERT INTO answered_questions (username, question_id) VALUES (%s, %s)', (username, question_id))
         conn.commit()
         return "Correct answer! Points added."
     else:
@@ -118,7 +121,7 @@ def start():
 
 # Main server setup
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("localhost", 5555))
+server.bind(("0.0.0.0", 5555))
 
 print("[STARTING] Server is starting...")
 start()
