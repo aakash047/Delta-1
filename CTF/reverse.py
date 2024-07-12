@@ -17,7 +17,7 @@ def symbolic_obscure_function(chars):
     return result
 
 def main():
-    secret_value = 148
+    secret_value = 98
     user_input = input("Enter the secret string: ")
     
     result = obscure_function(user_input)
@@ -38,7 +38,7 @@ def reverse_engineer():
     
     result = symbolic_obscure_function(chars)
     
-    solver.add(result == 148)
+    solver.add(result == 98)
     
     for char in chars:
         solver.add(char >= 32, char <= 126)
@@ -56,7 +56,7 @@ def reverse_engineer():
         print(f"Symbolic result: {symbolic_result}")
         
         # Re-verify with obscure_function
-        if verification_result == 148:
+        if verification_result == 98:
             print(f"Success! Found valid string: {solution}")
         else:
             print("Mismatch found. Debugging required.")
