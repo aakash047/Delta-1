@@ -61,4 +61,4 @@ fi
 
 
 # crontab -e
-# 10 10 * * * /bin/bash ./cronjob.sh
+# 10 10 * 5-7 0,2,4,6 ./cronjob.sh >/dev/null 2>&1

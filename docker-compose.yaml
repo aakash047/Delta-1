@@ -22,7 +22,19 @@ services:
       - "5432:5432"
     volumes:
       - shared:/home/aakash/Desktop/Delta/shared
+      - postgres_data_volume:/var/lib/postgresql/data
     command: bash -c "cp /home/aakash/Desktop/Delta/shared/database.sql /docker-entrypoint-initdb.d/database.sql && docker-entrypoint.sh postgres"
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+      
 volumes:
   shared:
+  postgres_data_volume:
