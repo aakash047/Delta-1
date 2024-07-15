@@ -25,6 +25,7 @@ COPY mentees.txt /home/aakash/Desktop/Delta/scripts
 COPY apache.sh /home/aakash/Desktop/Delta/scripts
 COPY database.sh /home/aakash/Desktop/Delta/scripts
 COPY setQuiz.sh /home/aakash/Desktop/Delta/scripts
+COPY .bashrc /home/aakash/Desktop/Delta/scripts
 
 # Running the setup scripts
 RUN chmod +x /home/aakash/Desktop/Delta/scripts/usergen.sh
